@@ -26,18 +26,18 @@ function applyMenuRotation() {
     const root = document.documentElement;
     root.style.setProperty('--menu-rotation', `${rotation}deg`);
     if (windowName === "table") {
-        const img = document.getElementById('fsImage');
-        if (img) {
-            img.style.position = 'absolute';
-            img.style.top = '50%';
-            img.style.left = '50%';
-            img.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+        const media = document.getElementById('fsMedia');
+        if (media) {
+            media.style.position = 'absolute';
+            media.style.top = '50%';
+            media.style.left = '50%';
+            media.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
             if (Math.abs(rotation) === 90 || Math.abs(rotation) === 270) {
-                img.style.width = '100vh';
-                img.style.height = '100vw';
+                media.style.width = '100vh';
+                media.style.height = '100vw';
             } else {
-                img.style.width = '100vw';
-                img.style.height = '100vh';
+                media.style.width = '100vw';
+                media.style.height = '100vh';
             }
         }
         const overlay = document.getElementById('overlay-root');
@@ -120,6 +120,62 @@ function hideRemoteLaunchOverlay() {
     }
 }
 
+function hasUsableMedia(url) {
+    return !!url && !url.endsWith('/file_missing.png');
+}
+
+function clearMediaElement() {
+    const media = document.getElementById('fsMedia');
+    if (!media) return;
+
+    if (media.tagName === 'VIDEO') {
+        media.pause();
+        media.removeAttribute('src');
+        media.load();
+    } else {
+        media.removeAttribute('src');
+    }
+}
+
+function renderFullscreenMedia(imageUrl, videoUrl = null) {
+    const container = document.getElementById('fadeContainer');
+    if (!container) return;
+
+    const preferVideo = (windowName === 'bg' || windowName === 'dmd') && hasUsableMedia(videoUrl);
+    const mediaTag = preferVideo ? 'video' : 'img';
+    let media = document.getElementById('fsMedia');
+
+    if (!media || media.tagName.toLowerCase() !== mediaTag) {
+        if (media) {
+            clearMediaElement();
+            media.remove();
+        }
+
+        media = document.createElement(mediaTag);
+        media.id = 'fsMedia';
+        media.className = 'fullscreen';
+
+        if (mediaTag === 'video') {
+            media.autoplay = true;
+            media.loop = true;
+            media.muted = true;
+            media.playsInline = true;
+        } else {
+            media.alt = 'Fullscreen';
+        }
+
+        container.replaceChildren(media);
+    }
+
+    if (mediaTag === 'video') {
+        media.poster = hasUsableMedia(imageUrl) ? imageUrl : '';
+        media.src = videoUrl;
+        media.load();
+    } else {
+        media.src = hasUsableMedia(imageUrl) ? imageUrl : '';
+    }
+}
+
 // Hook for Python events
 async function receiveEvent(message) {
     vpin.call("console_out", message);  // no 'this' here
@@ -194,14 +250,17 @@ async function handleInput(input) {
 }
 
 function setImage() {
-    // Check for empty table data
     if (!vpin.tableData || vpin.tableData.length === 0) {
-        const img = document.getElementById('fsImage');
-        if (img) img.src = '';
+        clearMediaElement();
         return;
     }
 
-    image = vpin.getImageURL(currentTableIndex, windowName)
-    const img = document.getElementById('fsImage');
-    img.src = image;  // Replace with your new image path
+    const imageUrl = vpin.getImageURL(currentTableIndex, windowName);
+    let videoUrl = null;
+
+    if (windowName === 'bg' || windowName === 'dmd') {
+        videoUrl = vpin.getVideoURL(currentTableIndex, windowName);
+    }
+
+    renderFullscreenMedia(imageUrl, videoUrl);
 }
