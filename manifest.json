@@ -1,10 +1,11 @@
 {
   "name": "Basic Cab",
-  "version": "1.6",
+  "version": "2.0.0",
   "author": "superhac",
-  "description": "A plain cab setup theme that reflects how vpx lays out a 3 screen system.",
+  "description": "The playfield screen shows the selected table's art, full screen and nothing else. Made for cabinets.",
   "preview_image": "preview.png",
-  "supported_screens": 3,
   "type": "cab",
-  "change_log": "add video support including bg and dmd."
+  "change_log": "Rebuilt for VPinFE 3.0: core now handles input, audio, preloading, the loading indicator, turning the art for a sideways screen, attract mode and the backglass and score view pages. The theme only draws the playfield art. New option: Playfield Video.",
+  "min_vpinfe": "3.0",
+  "windows": ["playfield"]
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VPinFE - Basic Cab</title>
+  <!-- Core's stylesheet comes first so style.css can restyle what it provides:
+       the layout classes, the loading indicator and the hold ring. -->
+  <link rel="stylesheet" href="/core/common/vpinfe-style.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="/core/common/vpinfe-core.js"></script>
+</head>
+<body>
+  <!-- .vpinfe-upright turns the whole page to face the player when the cabinet
+       mounts the playfield screen sideways. Leave it on the outermost element. -->
+  <main class="stage vpinfe-upright">
+
+    <!-- The table's art. theme.js draws it, so the picture-only default is the
+         theme's call; core would pick the video whenever there is one. -->
+    <div id="art"></div>
+
+    <!-- The table's name, for a table with no playfield art. -->
+    <p id="name" hidden></p>
+  </main>
+
+  <!-- Core mounts its dialogs here: the menu, the collection picker and confirms. -->
+  <div id="overlay-root"></div>
+
+  <script src="theme.js"></script>
+</body>
+</html>
