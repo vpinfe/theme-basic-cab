@@ -53,6 +53,13 @@ function drawSelection(list) {
   nameEl.hidden = true;
   if (list.length === 0) return;
 
+  // The collection picker's rows are not wheel entries: they have a label and no game or media.
+  if (list.kind === "collection") {
+    nameEl.textContent = list.current.label;
+    nameEl.hidden = false;
+    return;
+  }
+
   const entry = list.current;
   const wantVideo = option("playfieldVideo", false) && entry.media.includes("playfield_video");
 
