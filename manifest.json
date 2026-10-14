@@ -5,7 +5,7 @@
   "description": "The playfield screen shows the selected table's art, full screen and nothing else. Made for cabinets.",
   "preview_image": "preview.png",
   "type": "cab",
-  "change_log": "Rebuilt for VPinFE 3.0: core now handles input, audio, preloading, the loading indicator, turning the art for a sideways screen, attract mode and the backglass and score view pages. The theme only draws the playfield art. New option: Playfield Video.",
+  "change_log": "Rebuilt for VPinFE 3.0.\n\nCore now handles input, audio, preloading, the loading indicator, turning the art for a sideways screen, attract mode and the backglass and score view pages. The theme only draws the playfield art.\n\nThe art is the playfield video or picture that Playfield Media Priority in VPinFE's settings asks for. A table that has only one of them shows that one. Basic Cab has no setting of its own now.",
   "min_vpinfe": "3.0",
   "windows": ["playfield"]
 }
